@@ -1,5 +1,6 @@
 package ir.realstresser.extremeantibot.protections.impl;
 
+import ir.realstresser.extremeantibot.ConsoleHandler;
 import ir.realstresser.extremeantibot.protections.ProtectionInformation;
 import ir.realstresser.extremeantibot.protections.protection;
 import net.md_5.bungee.api.event.PlayerHandshakeEvent;
@@ -11,6 +12,7 @@ public class BotA extends protection implements Listener {
 
     @EventHandler
     public void onJoin(PlayerHandshakeEvent e){
+        ConsoleHandler.info("test"); // to let us know if registered as listener
         saveData(e.getConnection().getName(),
                 "ip",
                 e.getConnection().getSocketAddress().toString());
