@@ -1,0 +1,3 @@
+name: ExtremeAntiBot
+version: '${project.version}'
+main: ir.realstresser.extremeantibot.ExtremeAntiBot
