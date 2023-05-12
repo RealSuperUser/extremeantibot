@@ -22,7 +22,7 @@ import java.util.Map;
 public class BotA extends protection implements Listener {
 
     @EventHandler
-    public void onJoin(PreLoginEvent e){
+    public void onJoin(PreLoginEvent e) {
         if (InitHandler.isDebug) {
             ConsoleHandler.info("Handling new username, username is: " + e.getConnection().getName());
         }
@@ -35,43 +35,43 @@ public class BotA extends protection implements Listener {
             json2.addProperty("accounts", 1);
             json2.addProperty("username", e.getConnection().getName());
             json.add(e.getConnection().getAddress().getAddress().getHostAddress(), json2);
-            try{
+            try {
                 if (InitHandler.isDebug) {
                     ConsoleHandler.info("saving a data.json");
                 }
                 PrintWriter save = new PrintWriter(new FileWriter(data));
                 save.println(JsonUtil.PrettyGson.toJson(json));
                 save.close();
-            }catch(Exception ex){
+            } catch (Exception ex) {
                 ex.printStackTrace();
                 System.out.println("Please report this lines to XyPz, this may have some debug informations.");
             }
-        } else{
+        } else {
             if (InitHandler.isDebug) {
                 ConsoleHandler.info("Setting alreadyAccountExists value...");
             }
             boolean alreadyAccountExists = false;
             try {
                 BufferedReader load = new BufferedReader(new FileReader(data));
-                JsonObject json = (JsonObject)JsonUtil.jsonParser.parse(load);
+                JsonObject json = (JsonObject) JsonUtil.jsonParser.parse(load);
                 load.close();
                 for (Map.Entry<String, JsonElement> entry : json.entrySet()) {
                     JsonObject jsonModule = (JsonObject) entry.getValue();
-                    if (entry.getKey().contains(e.getConnection().getAddress().getAddress().getHostAddress())){
+                    if (entry.getKey().contains(e.getConnection().getAddress().getAddress().getHostAddress())) {
                         if (InitHandler.isDebug) {
                             ConsoleHandler.info("Account " + e.getConnection().getAddress().getAddress().getHostAddress() + " Already exists");
                         }
                         alreadyAccountExists = true;
-                    } else{
+                    } else {
                         alreadyAccountExists = false;
                     }
                 }
-            } catch(Exception ex){
+            } catch (Exception ex) {
                 ex.printStackTrace();
                 System.out.println("Please report this lines to XyPz, this may have some debug informations.");
             }
 
-            try{
+            try {
                 if (!alreadyAccountExists) {
                     if (InitHandler.isDebug) {
                         ConsoleHandler.info("Account is not already in data.json, adding it......");
@@ -98,28 +98,28 @@ public class BotA extends protection implements Listener {
                         ex.printStackTrace();
                         System.out.println("Please report this lines to XyPz, this may have some debug informations.");
                     }
-                } else{
+                } else {
                     if (InitHandler.isDebug) {
                         ConsoleHandler.info("checking for same username by one ip.");
                     }
                     boolean isSameUsername = false;
                     int count = 1;
                     BufferedReader load = new BufferedReader(new FileReader(data));
-                    JsonObject json = (JsonObject)JsonUtil.jsonParser.parse(load);
+                    JsonObject json = (JsonObject) JsonUtil.jsonParser.parse(load);
                     load.close();
                     for (Map.Entry<String, JsonElement> entry : json.entrySet()) {
                         JsonObject jsonModule = (JsonObject) entry.getValue();
-                        if (entry.getKey().contains(e.getConnection().getAddress().getAddress().getHostAddress())){
+                        if (entry.getKey().contains(e.getConnection().getAddress().getAddress().getHostAddress())) {
                             count = jsonModule.get("accounts").getAsInt();
-                            if(jsonModule.get("username").getAsString().equalsIgnoreCase(e.getConnection().getName())){
+                            if (jsonModule.get("username").getAsString().equalsIgnoreCase(e.getConnection().getName())) {
                                 isSameUsername = true;
                                 if (InitHandler.isDebug) {
                                     ConsoleHandler.info("Detected the same username.");
                                 }
-                            } else{
+                            } else {
                                 isSameUsername = false;
                             }
-                        } else{
+                        } else {
                         }
 
                     }
@@ -130,36 +130,22 @@ public class BotA extends protection implements Listener {
                         if (InitHandler.isDebug) {
                             ConsoleHandler.info("Doing after same username tasks...");
                         }
-                        JsonElement jsonElement;// = JsonUtil.jsonParser.parse(new FileReader(data));
+                        JsonObject jsonObject;
                         try (FileReader fileReader = new FileReader(data)) {
-                            jsonElement = JsonUtil.gson.fromJson(fileReader, JsonElement.class);
+                            jsonObject = JsonUtil.gson.fromJson(fileReader, JsonElement.class).getAsJsonObject();
                         } catch (IOException ex) {
                             ex.printStackTrace();
                             System.out.println("Please report this lines to XyPz, this may have some debug informations.");
                             return;
                         }
-                        JsonObject jsonObject = jsonElement.getAsJsonObject();
+                        if (jsonObject.has(e.getConnection().getAddress().getAddress().getHostAddress())) {
 
-                        jsonObject.addProperty("accounts", count++);
-
-                        try (FileWriter fileWriter = new FileWriter(data)) {
-                            JsonUtil.gson.toJson(json, fileWriter);
-                        } catch(Exception ex){
-                            ex.printStackTrace();
-                            System.out.println("Please report this lines to XyPz, this may have some debug informations.");
                         }
-
                     }
-
-
                 }
-
-            } catch(Exception ex){
+            } catch (Exception ex) {
                 ex.printStackTrace();
-                System.out.println("Please report this lines to XyPz, this may have some debug informations.");
             }
-
         }
-
     }
 }
