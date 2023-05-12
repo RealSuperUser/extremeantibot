@@ -2,6 +2,7 @@ package ir.realstresser.extremeantibot.protections;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import ir.realstresser.extremeantibot.ConsoleHandler;
 import ir.realstresser.extremeantibot.InitHandler;
 import ir.realstresser.extremeantibot.protections.impl.BotA;
 import ir.realstresser.extremeantibot.utils.FileManager;
@@ -25,6 +26,9 @@ public class protection {
         Name = protInfo.name();
     }
     public static void init(){
+        if(InitHandler.isDebug){
+            ConsoleHandler.info("Registering protections...");
+        }
         InitHandler.instance.getProxy().getPluginManager().registerListener(InitHandler.instance, new BotA());
     }
 

@@ -3,7 +3,7 @@ package ir.realstresser.extremeantibot.value;
 import ir.realstresser.extremeantibot.ConsoleHandler;
 import ir.realstresser.extremeantibot.InitHandler;
 import ir.realstresser.extremeantibot.protections.ProtectionInformation;
-import ir.realstresser.extremeantibot.value.impl.prefix;
+import ir.realstresser.extremeantibot.value.impl.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -76,8 +76,8 @@ public class ValueHandler {
         isStrVal  = true;
     }
     public static void init(){
-        ConsoleHandler.info("Called init in value handler");
         InitHandler.values.add(new prefix());
+        InitHandler.values.add(new debug());
     }
 
     public static ValueHandler getValueByName(String moduleName) {

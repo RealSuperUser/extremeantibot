@@ -12,6 +12,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @UtilityClass
 public class InitHandler {
     public String Prefix = "";
+    public boolean isDebug;
     public ExtremeAntiBot instance = ExtremeAntiBot.getInstance();
 
     public CopyOnWriteArrayList<ValueHandler> values = new CopyOnWriteArrayList<>();
@@ -20,6 +21,7 @@ public class InitHandler {
         FileManager.init();
         protection.init();
         Prefix = Objects.requireNonNull(ValueHandler.getValueByName("prefix")).getDefaultValStr();
+        isDebug = Objects.requireNonNull(ValueHandler.getValueByName("debug")).getDefaultValBool();
     }
     public void Shutdown(){
     }
