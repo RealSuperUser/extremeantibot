@@ -24,9 +24,6 @@ public class FileManager {
         } else{
             loadConfig();
         }
-        if (!protection.data.exists()) {
-            protection.saveData("default", "default", "default");
-        }
     }
 
     public void saveConfig(){
