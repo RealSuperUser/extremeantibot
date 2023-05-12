@@ -78,6 +78,7 @@ public class ValueHandler {
     public static void init(){
         InitHandler.values.add(new prefix());
         InitHandler.values.add(new debug());
+        InitHandler.values.add(new storage());
     }
 
     public static ValueHandler getValueByName(String moduleName) {

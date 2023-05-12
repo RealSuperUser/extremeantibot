@@ -20,6 +20,22 @@ public class InitHandler {
         ValueHandler.init();
         FileManager.init();
         protection.init();
+        String storage = Objects.requireNonNull(ValueHandler.getValueByName("storage")).getDefaultValStr();
+        switch(storage){
+            case "json" : {
+                break;
+            }
+            case "sqllite": {
+                break;
+            }
+            case "mysql": {
+                break;
+            }
+            default: {
+                ConsoleHandler.error("we cant use this storage provider: " + storage + " because its not json or sqllite or mysql. nothing will work properly.");
+            }
+
+        }
         Prefix = Objects.requireNonNull(ValueHandler.getValueByName("prefix")).getDefaultValStr();
         isDebug = Objects.requireNonNull(ValueHandler.getValueByName("debug")).getDefaultValBool();
     }

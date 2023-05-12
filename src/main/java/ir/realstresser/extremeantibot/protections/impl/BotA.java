@@ -8,6 +8,7 @@ import ir.realstresser.extremeantibot.InitHandler;
 import ir.realstresser.extremeantibot.protections.ProtectionInformation;
 import ir.realstresser.extremeantibot.protections.protection;
 import ir.realstresser.extremeantibot.utils.JsonUtil;
+import ir.realstresser.extremeantibot.value.ValueHandler;
 import jdk.nashorn.internal.parser.JSONParser;
 import net.md_5.bungee.api.event.PlayerHandshakeEvent;
 import net.md_5.bungee.api.event.PreLoginEvent;
@@ -17,12 +18,16 @@ import com.google.gson.JsonParser;
 
 import java.io.*;
 import java.util.Map;
+import java.util.Objects;
 
 @ProtectionInformation(name = "Bot A")
 public class BotA extends protection implements Listener {
 
     @EventHandler
     public void onJoin(PreLoginEvent e) {
+        if(!Objects.requireNonNull(ValueHandler.getValueByName("storage")).getDefaultValStr().equals("json")){
+            return;
+        }
         if (InitHandler.isDebug) {
             ConsoleHandler.info("Handling new username, username is: " + e.getConnection().getName());
         }
@@ -103,15 +108,15 @@ public class BotA extends protection implements Listener {
                         ConsoleHandler.info("checking for same username by one ip.");
                     }
                     boolean isSameUsername = false;
-                    int count = 1;
+                    int count = 0;
                     BufferedReader load = new BufferedReader(new FileReader(data));
                     JsonObject json = (JsonObject) JsonUtil.jsonParser.parse(load);
                     load.close();
                     for (Map.Entry<String, JsonElement> entry : json.entrySet()) {
                         JsonObject jsonModule = (JsonObject) entry.getValue();
-                        if (entry.getKey().contains(e.getConnection().getAddress().getAddress().getHostAddress())) {
+                        if (entry.getKey().equalsIgnoreCase(e.getConnection().getAddress().getAddress().getHostAddress())) {
                             count = jsonModule.get("accounts").getAsInt();
-                            if (jsonModule.get("username").getAsString().equalsIgnoreCase(e.getConnection().getName())) {
+                            if (!e.getConnection().getName().equalsIgnoreCase(jsonModule.get("username").getAsString())) {
                                 isSameUsername = true;
                                 if (InitHandler.isDebug) {
                                     ConsoleHandler.info("Detected the same username.");
@@ -122,9 +127,6 @@ public class BotA extends protection implements Listener {
                         } else {
                         }
 
-                    }
-                    if (InitHandler.isDebug) {
-                        ConsoleHandler.info("Doing after same username tasks...");
                     }
                     if (isSameUsername) {
                         if (InitHandler.isDebug) {
