@@ -132,14 +132,20 @@ public class BotA extends protection implements Listener {
                         }
                         JsonObject jsonObject;
                         try (FileReader fileReader = new FileReader(data)) {
-                            jsonObject = JsonUtil.gson.fromJson(fileReader, JsonElement.class).getAsJsonObject();
+                            jsonObject = JsonUtil.gson.fromJson(fileReader, JsonObject.class);
                         } catch (IOException ex) {
                             ex.printStackTrace();
                             System.out.println("Please report this lines to XyPz, this may have some debug informations.");
                             return;
                         }
                         if (jsonObject.has(e.getConnection().getAddress().getAddress().getHostAddress())) {
-
+                            JsonObject nestedObject = jsonObject.getAsJsonObject(e.getConnection().getAddress().getAddress().getHostAddress());
+                            if (nestedObject.has("accounts")) {
+                                nestedObject.addProperty("accounts", count++);
+                            }
+                        }
+                        try (FileWriter writer = new FileWriter(data)) {
+                            JsonUtil.gson.toJson(jsonObject, writer);
                         }
                     }
                 }
